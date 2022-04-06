@@ -92,9 +92,14 @@ birdblock.addBlock(new BirdBlock('crow', 2, new Date().toISOString()));
 
 console.log('Original blockchain with a raven and crow added.')
 console.log('Is the blockchain valid?: ', birdblock.checkChainValidity());
-console.log('');
+console.log();
 
 birdblock.chain[1].data.species = 'goose';
 console.log('Going goose mode on a previous block.');
+console.log('Is the blockchain valid?: ', birdblock.checkChainValidity());
+console.log();
+
+birdblock.chain[1].hash = birdblock.chain[1].calculateHash();
+console.log('Splicing a new hash onto a middle block.');
 console.log('Is the blockchain valid?: ', birdblock.checkChainValidity());
 console.log();
