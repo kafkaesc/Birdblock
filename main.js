@@ -28,6 +28,7 @@ class BirdBlock {
 
         this.data = bird;
         this.index = index;
+        this.nonce = 0;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
         this.hash = this.calculateHash();
@@ -38,20 +39,31 @@ class BirdBlock {
             this.data.call +
             this.data.species + 
             this.index + 
+            this.nonce +
             this.previousHash + 
             this.timestamp
         ).toString();
+    }
+
+    hatchBlock(difficulty) {
+        const goalPrefix = Array(difficulty + 1).join('0');
+        while (this.hash.substring(0, difficulty) !== goalPrefix) {
+            this.nonce++;
+            this.hash = this.calculateHash();
+        }
+        console.log('Block hatched: ' + this.hash);
     }
 }
 
 class Blockchain {
     constructor() {
         this.chain = [this.generateGenesisBlock()];
+        this.difficulty = 5;
     }
 
     addBlock(newBlock) {
         newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock.calculateHash();
+        newBlock.hatchBlock(this.difficulty)
         this.chain.push(newBlock);
     }
 
@@ -87,8 +99,14 @@ class Blockchain {
 }
 
 let birdblock = new Blockchain();
+
+console.log('Hatching block 1...')
 birdblock.addBlock(new BirdBlock('raven', 1, new Date().toISOString()));
+console.log();
+
+console.log("Hatching block 2...")
 birdblock.addBlock(new BirdBlock('crow', 2, new Date().toISOString()));
+console.log();
 
 console.log('Original blockchain with a raven and crow added.')
 console.log('Is the blockchain valid?: ', birdblock.checkChainValidity());
