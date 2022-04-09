@@ -8,7 +8,7 @@ class BirdBlock {
         else if (species === 'crow')
             bird = { call: 'Caw caw', species: 'Crow' };
         else if (species === 'duck')
-            bird = { call: 'Quack quack', species: ' Duck' };
+            bird = { call: 'Quack quack', species: 'Duck' };
         else if (species === 'goose')
             bird = { call: 'Honk honk', species: 'Goose' };
         else if (species === 'impostor')
