@@ -57,7 +57,7 @@ class BirdBlock {
 
 class Blockchain {
     constructor() {
-        this.chain = [this.generateGenesisBlock()];
+        this.chain = [this.hatchGenesisBlock()];
         this.difficulty = 5;
     }
 
@@ -83,7 +83,7 @@ class Blockchain {
         return true;
     }
 
-    generateGenesisBlock() {
+    hatchGenesisBlock() {
         return !this.chain
             ? new BirdBlock(
                 null,
