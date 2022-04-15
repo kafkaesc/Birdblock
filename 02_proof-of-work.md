@@ -8,7 +8,7 @@ I devise a simple proof of work method. Every entry form has a random number on 
 
 The instructions on the form say to take the start number, add your birth year to it, then solve for the smallest number whose sum makes the last two digits become 00. Lets do an example: you were born in 1987 and the form says the start number is 42. 1987 plus 42 is 2029. You will need to add 71 to 2029 to produce 2100. You write 71 into the proof box.
 
-Any contest entry that does produce the final 00 gets thrown out, and it's very simple to check whether those three numbers add up. The "work" required in this proof of work is simple arithmetic, but lets be honest, how many of us would send less contest entries to avoid doing the math?
+Any contest entry that does not produce the final 00 gets thrown out, and it's very simple to check whether those three numbers add up. The "work" required in this proof of work is simple arithmetic, but lets be honest, how many of us would send less contest entries to avoid doing the math?
 
 Proof of work is a computational concept and the simplicity of this example is computationally laughable. Sometimes the point of proof of work is not to be difficult, only to be inconvenient enough to discourage certain behaviors. If proof of work limits users to only send a message every two seconds that allows 1800 messages per hour: more than enough for someone like me, but a limiting factor for spammers.
 
