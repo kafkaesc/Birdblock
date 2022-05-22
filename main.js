@@ -108,6 +108,14 @@ console.log("Hatching block 2...")
 birdblock.addBlock(new BirdBlock('crow', 2, new Date().toISOString()));
 console.log();
 
+console.log("Hatching block 3...")
+birdblock.addBlock(new BirdBlock('owl', 3, new Date().toISOString()));
+console.log();
+
+console.log("Hatching block 4...")
+birdblock.addBlock(new BirdBlock('bluebird', 4, new Date().toISOString()));
+console.log();
+
 console.log('Original blockchain with a raven and crow added.')
 console.log('Is the blockchain valid?: ', birdblock.checkChainValidity());
 console.log();

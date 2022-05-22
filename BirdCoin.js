@@ -1,10 +1,19 @@
 const SHA256 = require('crypto-js/sha256');
 
+class Transaction {
+    constructor(fromAddress, toAddress, amount) {
+        this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
+        this.amount = amount;
+    }
+}
+
 class Block {
-    constructor(timestamp, previousHash = '') {
+    constructor(timestamp, transactions, previousHash = '') {
         this.nonce = 0;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
+        this.transactions = transactions;
         this.hash = this.calculateHash();
     }
 
@@ -30,17 +39,12 @@ class Blockchain {
     constructor() {
         this.chain = [this.buildGenesisBlock()];
         this.difficulty = 5;
-        this.miningReward = 100;
-    }
-
-    addBlock(newBlock) {
-        newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.mineBlock(this.difficulty);
-        this.chain.push(newBlock);
+        this.pendingTransactions = [];
+        this.miningReward = 10;
     }
 
     buildGenesisBlock() {
-        return new Block(new Date().toISOString());
+        return new Block(new Date().toISOString(), [], 0);
     }
 
     checkChainValidity() {
@@ -59,23 +63,71 @@ class Blockchain {
         return true;
     }
 
+    createTransaction(transaction) {
+        this.pendingTransactions.push(transaction);
+    }
+
+    getBalanceOfAddress(address) {
+        let balance = 0;
+        for (const block of this.chain) {
+            for (const trans of block.transactions) {
+                if (trans.fromAddress === address) {
+                    balance -= trans.amount;
+                }
+                if (trans.toAddress === address) {
+                    balance += trans.amount;
+                }
+            }
+        }
+        return balance;
+    }
+
     getLatestBlock() {
         return this.chain[this.chain.length - 1];
     }
+
+    logWallet(walletName) {
+        console.log(
+            'Balance of ' + walletName + ' is',
+            birdcoin.getBalanceOfAddress(walletName)
+        );
+    }
+
+    minePendingTransactions(minerRewardAddress) {
+        let block = new Block(
+            Date.now(),
+            this.pendingTransactions,
+            this.getLatestBlock().hash
+        );
+        block.mineBlock(this.difficulty);
+
+        console.log("Block successfully mined!");
+        this.chain.push(block);
+
+        this.pendingTransactions = [
+            new Transaction(null, minerRewardAddress, this.miningReward)
+        ];
+    }
 }
 
-let birdcoin = new Blockchain();
-console.log("Mining block 1...");
-birdcoin.addBlock(new Block(new Date().toISOString()));
+const birdcoin = new Blockchain();
+
+birdcoin.createTransaction(new Transaction('Wallet01', 'Wallet02', 60));
+birdcoin.createTransaction(new Transaction('Wallet02', 'Wallet01', 20));
+
+console.log("Running the miner...");
+birdcoin.minePendingTransactions('MinerAddress');
 console.log();
 
-console.log("Mining block 2...");
-birdcoin.addBlock(new Block(new Date().toISOString()));
+console.log("Running the miner...");
+birdcoin.minePendingTransactions('MinerAddress');
 console.log();
 
-console.log("Mining block 3...");
-birdcoin.addBlock(new Block(new Date().toISOString()));
+birdcoin.logWallet('Wallet01');
 console.log();
 
-console.log("The current BirdCoin chain: ", birdcoin);
+birdcoin.logWallet('Wallet02');
+console.log();
+
+birdcoin.logWallet('MinerAddress');
 console.log();
